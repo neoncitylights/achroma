@@ -4,9 +4,10 @@ A set of crates for working with color vision and color vision deficiency
 
 ## Crates
 
-| Crate | Badges |
+| Crate | About |
 | ----- | ------ |
-| [achroma](./crates/achroma/) | |
+| [achroma](./crates/achroma/) | core crate for color vision/CVD |
+| [achroma_sim](./crates/achroma_sim) | color conversion and simulation of different CVD (work-in-progress) |
 
 ## License
 

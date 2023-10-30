@@ -9,8 +9,21 @@ readme = "README.md"
 license = "MIT OR Apache-2.0"
 edition = "2021"
 rust-version = "1.70.0"
-# keywords = []
-# categories = []
+homepage = "https://github.com/neoncitylights/achroma"
+repository = "https://github.com/neoncitylights/achroma"
+documentation = "https://docs.rs/achroma/"
+categories = [
+	"science",
+	"graphics",
+	"computer-vision",
+	"no-std",
+]
+keywords = [
+	"color",
+	"color vision deficiency",
+	"cvd",
+	"color blindness"
+]
 exclude = [
 	".devcontainer",
 	".github",
