@@ -425,6 +425,52 @@ impl From<[ConeCellCond; 3]> for ConeCellSummary {
 	}
 }
 
+impl Index<ConeCell> for ConeCellSummary {
+	type Output = ConeCellCond;
+
+	/// Index a [`ConeCellSummary`] by [`ConeCell`]
+	///
+	/// ```
+	/// use achroma::{ColorVision, ConeCell, ConeCellSummary, ConeCellCond};
+	///
+	/// let summary = ConeCellSummary::from(ColorVision::Protanomaly);
+	///
+	/// assert_eq!(summary[ConeCell::Long], ConeCellCond::Anomalous);
+	/// assert_eq!(summary[ConeCell::Medium], ConeCellCond::Normal);
+	/// assert_eq!(summary[ConeCell::Short], ConeCellCond::Normal);
+	/// ```
+	fn index(&self, index: ConeCell) -> &Self::Output {
+		match index {
+			ConeCell::Long => &self.l,
+			ConeCell::Medium => &self.m,
+			ConeCell::Short => &self.s,
+		}
+	}
+}
+
+impl IndexMut<ConeCell> for ConeCellSummary {
+	/// Mutate a value of [`ConeCellSummary`] by indexing with [`ConeCell`]
+	///
+	/// ```
+	/// use achroma::{ConeCell, ConeCellSummary, ConeCellCond};
+	///
+	/// // create a summary that describes trichromacy
+	/// let mut normal = ConeCellSummary::default();
+	/// assert!(normal[ConeCell::Long].is_normal());
+	///
+	/// // mutate normal trichromacy into protanomaly
+	/// normal[ConeCell::Long] = ConeCellCond::Anomalous;
+	/// assert!(normal[ConeCell::Long].is_anomalous());
+	/// ```
+	fn index_mut(&mut self, index: ConeCell) -> &mut Self::Output {
+		match index {
+			ConeCell::Long => &mut self.l,
+			ConeCell::Medium => &mut self.m,
+			ConeCell::Short => &mut self.s,
+		}
+	}
+}
+
 impl Index<usize> for ConeCellSummary {
 	type Output = ConeCellCond;
 	fn index(&self, index: usize) -> &Self::Output {
