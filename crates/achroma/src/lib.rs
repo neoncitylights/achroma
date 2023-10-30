@@ -122,7 +122,7 @@ pub struct ConeCellSummary {
 }
 
 impl ConeCellSummary {
-	/// see documentation for [`ColorVision::Normal`]
+	/// See documentation for [`ColorVision::Normal`]
 	pub const NORMAL: Self = Self::new(
 		ConeCellCond::Normal,
 		ConeCellCond::Normal,
