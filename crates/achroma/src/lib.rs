@@ -1002,6 +1002,54 @@ mod tests {
 	}
 
 	#[test]
+	fn test_summary_from_cv() {
+		let normal = ConeCellSummary::from(ColorVision::Normal);
+		assert_eq!(normal.l, ConeCellCond::Normal);
+		assert_eq!(normal.m, ConeCellCond::Normal);
+		assert_eq!(normal.s, ConeCellCond::Normal);
+
+		let tritanomaly = ConeCellSummary::from(ColorVision::Tritanomaly);
+		assert_eq!(tritanomaly.l, ConeCellCond::Normal);
+		assert_eq!(tritanomaly.m, ConeCellCond::Normal);
+		assert_eq!(tritanomaly.s, ConeCellCond::Anomalous);
+
+		let tritanopia = ConeCellSummary::from(ColorVision::Tritanopia);
+		assert_eq!(tritanopia.l, ConeCellCond::Normal);
+		assert_eq!(tritanopia.m, ConeCellCond::Normal);
+		assert_eq!(tritanopia.s, ConeCellCond::Missing);
+
+		let protanomaly = ConeCellSummary::from(ColorVision::Protanomaly);
+		assert_eq!(protanomaly.l, ConeCellCond::Anomalous);
+		assert_eq!(protanomaly.m, ConeCellCond::Normal);
+		assert_eq!(protanomaly.s, ConeCellCond::Normal);
+
+		let achromatomaly = ConeCellSummary::from(ColorVision::Achromatomaly);
+		assert_eq!(achromatomaly.l, ConeCellCond::Missing);
+		assert_eq!(achromatomaly.m, ConeCellCond::Missing);
+		assert_eq!(achromatomaly.s, ConeCellCond::Normal);
+
+		let deuteranomaly = ConeCellSummary::from(ColorVision::Deuteranomaly);
+		assert_eq!(deuteranomaly.l, ConeCellCond::Normal);
+		assert_eq!(deuteranomaly.m, ConeCellCond::Anomalous);
+		assert_eq!(deuteranomaly.s, ConeCellCond::Normal);
+
+		let deuteranopia = ConeCellSummary::from(ColorVision::Deuteranopia);
+		assert_eq!(deuteranopia.l, ConeCellCond::Normal);
+		assert_eq!(deuteranopia.m, ConeCellCond::Missing);
+		assert_eq!(deuteranopia.s, ConeCellCond::Normal);
+
+		let achromatomaly = ConeCellSummary::from(ColorVision::Achromatomaly);
+		assert_eq!(achromatomaly.l, ConeCellCond::Missing);
+		assert_eq!(achromatomaly.m, ConeCellCond::Missing);
+		assert_eq!(achromatomaly.s, ConeCellCond::Normal);
+
+		let achromatopsia = ConeCellSummary::from(ColorVision::Achromatopsia);
+		assert_eq!(achromatopsia.l, ConeCellCond::Missing);
+		assert_eq!(achromatopsia.m, ConeCellCond::Missing);
+		assert_eq!(achromatopsia.s, ConeCellCond::Missing);
+	}
+
+	#[test]
 	fn test_is_cv_red_green() {
 		assert!(!ColorVision::Normal.is_red_green());
 		assert!(ColorVision::Protanomaly.is_red_green());
