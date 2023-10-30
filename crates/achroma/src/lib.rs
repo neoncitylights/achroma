@@ -100,14 +100,47 @@ pub enum ConeCellCond {
 }
 
 impl ConeCellCond {
+	/// Reports if the cone cell condition is normal
+	///
+	/// ```
+	/// use achroma::ConeCellSummary;
+	///
+	/// let protanopia = ConeCellSummary::PROTANOPIA;
+	///
+	/// assert_eq!(protanopia.long().is_normal(), false);
+	/// assert_eq!(protanopia.medium().is_normal(), true);
+	/// assert_eq!(protanopia.short().is_normal(), true);
+	/// ```
 	pub const fn is_normal(&self) -> bool {
 		matches!(self, Self::Normal)
 	}
 
+	/// Reports if the cone cell condition is anomalous
+	///
+	/// ```
+	/// use achroma::ConeCellSummary;
+	///
+	/// let tritanomaly = ConeCellSummary::TRITANOMALY;
+	///
+	/// assert_eq!(tritanomaly.long().is_anomalous(), false);
+	/// assert_eq!(tritanomaly.medium().is_anomalous(), false);
+	/// assert_eq!(tritanomaly.short().is_anomalous(), true);
+	/// ```
 	pub const fn is_anomalous(&self) -> bool {
 		matches!(self, Self::Anomalous)
 	}
 
+	/// Reports if the cone cell condition is missing
+	///
+	/// ```
+	/// use achroma::ConeCellSummary;
+	///
+	/// let achromatopsia = ConeCellSummary::ACHROMATOPSIA;
+	///
+	/// assert_eq!(achromatopsia.long().is_missing(), true);
+	/// assert_eq!(achromatopsia.medium().is_missing(), true);
+	/// assert_eq!(achromatopsia.short().is_missing(), true);
+	/// ```
 	pub const fn is_missing(&self) -> bool {
 		matches!(self, Self::Missing)
 	}
@@ -349,6 +382,8 @@ impl ConeCellSummary {
 	///    ConeCellCond::Normal,
 	///    ConeCellCond::Missing,
 	/// );
+	/// assert_eq!(tritanopia.is_cone_missing(ConeCell::Long), false);
+	/// assert_eq!(tritanopia.is_cone_missing(ConeCell::Medium), false);
 	/// assert_eq!(tritanopia.is_cone_missing(ConeCell::Short), true);
 	/// ```
 	pub const fn is_cone_missing(&self, cone: ConeCell) -> bool {
@@ -789,11 +824,43 @@ mod tests {
 	use super::*;
 
 	#[test]
+	fn test_conecell_tryfrom_char() {
+		assert_eq!(ConeCell::try_from('l'), Ok(ConeCell::Long));
+		assert_eq!(ConeCell::try_from('L'), Ok(ConeCell::Long));
+		assert_eq!(ConeCell::try_from('r'), Ok(ConeCell::Long));
+		assert_eq!(ConeCell::try_from('R'), Ok(ConeCell::Long));
+
+		assert_eq!(ConeCell::try_from('m'), Ok(ConeCell::Medium));
+		assert_eq!(ConeCell::try_from('M'), Ok(ConeCell::Medium));
+		assert_eq!(ConeCell::try_from('g'), Ok(ConeCell::Medium));
+		assert_eq!(ConeCell::try_from('G'), Ok(ConeCell::Medium));
+
+		assert_eq!(ConeCell::try_from('s'), Ok(ConeCell::Short));
+		assert_eq!(ConeCell::try_from('S'), Ok(ConeCell::Short));
+		assert_eq!(ConeCell::try_from('b'), Ok(ConeCell::Short));
+		assert_eq!(ConeCell::try_from('B'), Ok(ConeCell::Short));
+
+		assert_eq!(ConeCell::try_from('x'), Err(()));
+	}
+
+	#[test]
 	fn test_summary_default() {
 		let normal = ConeCellSummary::default();
 		assert_eq!(normal.l, ConeCellCond::Normal);
 		assert_eq!(normal.m, ConeCellCond::Normal);
 		assert_eq!(normal.s, ConeCellCond::Normal);
+	}
+
+	#[test]
+	fn test_summary_rgb() {
+		let achromatomaly = ConeCellSummary::rgb(
+			ConeCellCond::Missing,
+			ConeCellCond::Missing,
+			ConeCellCond::Normal,
+		);
+		assert_eq!(achromatomaly.l, ConeCellCond::Missing);
+		assert_eq!(achromatomaly.m, ConeCellCond::Missing);
+		assert_eq!(achromatomaly.s, ConeCellCond::Normal);
 	}
 
 	#[test]
@@ -810,6 +877,35 @@ mod tests {
 	}
 
 	#[test]
+	#[should_panic]
+	fn test_summary_index_usize_bounds_panic() {
+		let tritanopia = ConeCellSummary::new(
+			ConeCellCond::Normal,
+			ConeCellCond::Normal,
+			ConeCellCond::Anomalous,
+		);
+
+		tritanopia[3];
+	}
+
+	#[test]
+	fn test_summary_indexmut_usize() {
+		let mut tritanopia = ConeCellSummary::new(
+			ConeCellCond::Normal,
+			ConeCellCond::Normal,
+			ConeCellCond::Anomalous,
+		);
+
+		tritanopia[0] = ConeCellCond::Anomalous;
+		tritanopia[1] = ConeCellCond::Normal;
+		tritanopia[2] = ConeCellCond::Normal;
+
+		assert_eq!(tritanopia.l, ConeCellCond::Anomalous);
+		assert_eq!(tritanopia.m, ConeCellCond::Normal);
+		assert_eq!(tritanopia.s, ConeCellCond::Normal);
+	}
+
+	#[test]
 	fn test_summary_index_char() {
 		let tritanopia = ConeCellSummary::new(
 			ConeCellCond::Normal,
@@ -820,6 +916,56 @@ mod tests {
 		assert_eq!(tritanopia['l'], tritanopia.l);
 		assert_eq!(tritanopia['m'], tritanopia.m);
 		assert_eq!(tritanopia['s'], tritanopia.s);
+	}
+
+	#[test]
+	#[should_panic]
+	fn test_sumary_index_char_panic() {
+		let tritanopia = ConeCellSummary::TRITANOMALY;
+		tritanopia['x'];
+	}
+
+	#[test]
+	fn test_summary_indexmut_char() {
+		let mut tritanopia = ConeCellSummary::new(
+			ConeCellCond::Normal,
+			ConeCellCond::Normal,
+			ConeCellCond::Anomalous,
+		);
+
+		tritanopia['l'] = ConeCellCond::Anomalous;
+		tritanopia['m'] = ConeCellCond::Normal;
+		tritanopia['s'] = ConeCellCond::Normal;
+
+		assert_eq!(tritanopia.l, ConeCellCond::Anomalous);
+		assert_eq!(tritanopia.m, ConeCellCond::Normal);
+		assert_eq!(tritanopia.s, ConeCellCond::Normal);
+	}
+
+	#[test]
+	fn test_summary_from_tuple() {
+		let tritanopia = ConeCellSummary::from((
+			ConeCellCond::Normal,
+			ConeCellCond::Normal,
+			ConeCellCond::Anomalous,
+		));
+
+		assert_eq!(tritanopia.l, ConeCellCond::Normal);
+		assert_eq!(tritanopia.m, ConeCellCond::Normal);
+		assert_eq!(tritanopia.s, ConeCellCond::Anomalous);
+	}
+
+	#[test]
+	fn test_summary_from_array() {
+		let tritanopia = ConeCellSummary::from([
+			ConeCellCond::Normal,
+			ConeCellCond::Normal,
+			ConeCellCond::Anomalous,
+		]);
+
+		assert_eq!(tritanopia.l, ConeCellCond::Normal);
+		assert_eq!(tritanopia.m, ConeCellCond::Normal);
+		assert_eq!(tritanopia.s, ConeCellCond::Anomalous);
 	}
 
 	#[test]
@@ -924,5 +1070,45 @@ mod tests {
 		assert!(!ColorVision::Tritanomaly.is_dichromacy());
 		assert!(!ColorVision::Achromatomaly.is_dichromacy());
 		assert!(!ColorVision::Achromatopsia.is_dichromacy());
+	}
+
+	#[test]
+	fn test_cv_try_from_summary() {
+		assert_eq!(
+			ColorVision::try_from(ConeCellSummary::NORMAL),
+			Ok(ColorVision::Normal)
+		);
+		assert_eq!(
+			ColorVision::try_from(ConeCellSummary::PROTANOMALY),
+			Ok(ColorVision::Protanomaly)
+		);
+		assert_eq!(
+			ColorVision::try_from(ConeCellSummary::PROTANOPIA),
+			Ok(ColorVision::Protanopia)
+		);
+		assert_eq!(
+			ColorVision::try_from(ConeCellSummary::DEUTERANOMALY),
+			Ok(ColorVision::Deuteranomaly)
+		);
+		assert_eq!(
+			ColorVision::try_from(ConeCellSummary::DEUTERANOPIA),
+			Ok(ColorVision::Deuteranopia)
+		);
+		assert_eq!(
+			ColorVision::try_from(ConeCellSummary::TRITANOMALY),
+			Ok(ColorVision::Tritanomaly)
+		);
+		assert_eq!(
+			ColorVision::try_from(ConeCellSummary::TRITANOPIA),
+			Ok(ColorVision::Tritanopia)
+		);
+		assert_eq!(
+			ColorVision::try_from(ConeCellSummary::ACHROMATOMALY),
+			Ok(ColorVision::Achromatomaly)
+		);
+		assert_eq!(
+			ColorVision::try_from(ConeCellSummary::ACHROMATOPSIA),
+			Ok(ColorVision::Achromatopsia)
+		);
 	}
 }
