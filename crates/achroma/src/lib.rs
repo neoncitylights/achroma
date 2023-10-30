@@ -122,7 +122,7 @@ pub struct ConeCellSummary {
 }
 
 impl ConeCellSummary {
-	/// Normal trichromatic vision
+	/// see documentation for [`ColorVision::Normal`]
 	pub const NORMAL: Self = Self::new(
 		ConeCellCond::Normal,
 		ConeCellCond::Normal,
@@ -594,9 +594,6 @@ pub enum ColorVision {
 }
 
 impl ColorVision {
-	// pub fn get_cone_condition(&self, cone: Cone) -> ConeCondition;
-	// pub fn as_cone_conditions(&self): EyeCondition;
-
 	/// Returns whether the color vision is red-green color vision deficiency (CVD).
 	///
 	/// This returns true if the color vision is either protanomaly, protanopia,
