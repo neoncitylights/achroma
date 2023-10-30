@@ -427,7 +427,7 @@ impl From<[ConeCellCond; 3]> for ConeCellSummary {
 
 impl Index<usize> for ConeCellSummary {
 	type Output = ConeCellCond;
-	fn index(&self, index: usize) -> &ConeCellCond {
+	fn index(&self, index: usize) -> &Self::Output {
 		match index {
 			0 => &self.l,
 			1 => &self.m,
@@ -438,7 +438,7 @@ impl Index<usize> for ConeCellSummary {
 }
 
 impl IndexMut<usize> for ConeCellSummary {
-	fn index_mut(&mut self, index: usize) -> &mut ConeCellCond {
+	fn index_mut(&mut self, index: usize) -> &mut Self::Output {
 		match index {
 			0 => &mut self.l,
 			1 => &mut self.m,
@@ -450,7 +450,7 @@ impl IndexMut<usize> for ConeCellSummary {
 
 impl Index<char> for ConeCellSummary {
 	type Output = ConeCellCond;
-	fn index(&self, index: char) -> &ConeCellCond {
+	fn index(&self, index: char) -> &Self::Output {
 		match index {
 			'l' | 'L' | 'r' | 'R' => &self.l,
 			'm' | 'M' | 'g' | 'G' => &self.m,
@@ -461,7 +461,7 @@ impl Index<char> for ConeCellSummary {
 }
 
 impl IndexMut<char> for ConeCellSummary {
-	fn index_mut(&mut self, index: char) -> &mut ConeCellCond {
+	fn index_mut(&mut self, index: char) -> &mut Self::Output {
 		match index {
 			'l' | 'L' | 'r' | 'R' => &mut self.l,
 			'm' | 'M' | 'g' | 'G' => &mut self.m,
