@@ -864,6 +864,39 @@ mod tests {
 	}
 
 	#[test]
+	fn test_summary_index_conecell() {
+		let tritanopia = ConeCellSummary::new(
+			ConeCellCond::Normal,
+			ConeCellCond::Normal,
+			ConeCellCond::Anomalous,
+		);
+
+		assert_eq!(tritanopia[ConeCell::Long], tritanopia.l);
+		assert_eq!(tritanopia[ConeCell::Medium], tritanopia.m);
+		assert_eq!(tritanopia[ConeCell::Short], tritanopia.s);
+	}
+
+	#[test]
+	fn test_summary_indexmut_conecell() {
+		let mut deuteranomaly = ConeCellSummary::from(ColorVision::Deuteranomaly);
+		assert_eq!(deuteranomaly[ConeCell::Long], ConeCellCond::Normal);
+		assert_eq!(deuteranomaly[ConeCell::Medium], ConeCellCond::Anomalous);
+		assert_eq!(deuteranomaly[ConeCell::Short], ConeCellCond::Normal);
+
+		// mutate long cell
+		deuteranomaly[ConeCell::Long] = ConeCellCond::Anomalous;
+		assert_eq!(deuteranomaly[ConeCell::Long], ConeCellCond::Anomalous);
+
+		// mutate medium cell
+		deuteranomaly[ConeCell::Medium] = ConeCellCond::Normal;
+		assert_eq!(deuteranomaly[ConeCell::Medium], ConeCellCond::Normal);
+
+		// mutate short cell
+		deuteranomaly[ConeCell::Short] = ConeCellCond::Anomalous;
+		assert_eq!(deuteranomaly[ConeCell::Short], ConeCellCond::Anomalous);
+	}
+
+	#[test]
 	fn test_summary_index_usize() {
 		let tritanopia = ConeCellSummary::new(
 			ConeCellCond::Normal,
