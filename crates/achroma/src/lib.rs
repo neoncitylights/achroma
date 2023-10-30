@@ -341,6 +341,8 @@ impl ConeCellSummary {
 	///    ConeCellCond::Normal,
 	/// );
 	/// assert_eq!(protanopia.is_cone_normal(ConeCell::Long), false);
+	/// assert_eq!(protanopia.is_cone_normal(ConeCell::Medium), true);
+	/// assert_eq!(protanopia.is_cone_normal(ConeCell::Short), true);
 	/// ```
 	pub const fn is_cone_normal(&self, cone: ConeCell) -> bool {
 		match cone {
@@ -361,7 +363,9 @@ impl ConeCellSummary {
 	///    ConeCellCond::Anomalous,
 	///    ConeCellCond::Normal,
 	/// );
+	/// assert_eq!(deuteranomaly.is_cone_anomalous(ConeCell::Long), false);
 	/// assert_eq!(deuteranomaly.is_cone_anomalous(ConeCell::Medium), true);
+	/// assert_eq!(deuteranomaly.is_cone_anomalous(ConeCell::Short), false);
 	/// ```
 	pub const fn is_cone_anomalous(&self, cone: ConeCell) -> bool {
 		match cone {
@@ -939,6 +943,13 @@ mod tests {
 	}
 
 	#[test]
+	#[should_panic]
+	fn test_summary_indexmut_usize_panic() {
+		let mut normal = ConeCellSummary::default();
+		normal[3] = ConeCellCond::Anomalous;
+	}
+
+	#[test]
 	fn test_summary_index_char() {
 		let tritanopia = ConeCellSummary::new(
 			ConeCellCond::Normal,
@@ -973,6 +984,13 @@ mod tests {
 		assert_eq!(tritanopia.l, ConeCellCond::Anomalous);
 		assert_eq!(tritanopia.m, ConeCellCond::Normal);
 		assert_eq!(tritanopia.s, ConeCellCond::Normal);
+	}
+
+	#[test]
+	#[should_panic]
+	fn test_summary_indexmut_char_panic() {
+		let mut normal = ConeCellSummary::default();
+		normal['Z'] = ConeCellCond::Anomalous;
 	}
 
 	#[test]
@@ -1023,10 +1041,10 @@ mod tests {
 		assert_eq!(protanomaly.m, ConeCellCond::Normal);
 		assert_eq!(protanomaly.s, ConeCellCond::Normal);
 
-		let achromatomaly = ConeCellSummary::from(ColorVision::Achromatomaly);
-		assert_eq!(achromatomaly.l, ConeCellCond::Missing);
-		assert_eq!(achromatomaly.m, ConeCellCond::Missing);
-		assert_eq!(achromatomaly.s, ConeCellCond::Normal);
+		let protanopia = ConeCellSummary::from(ColorVision::Protanopia);
+		assert_eq!(protanopia.l, ConeCellCond::Missing);
+		assert_eq!(protanopia.m, ConeCellCond::Normal);
+		assert_eq!(protanopia.s, ConeCellCond::Normal);
 
 		let deuteranomaly = ConeCellSummary::from(ColorVision::Deuteranomaly);
 		assert_eq!(deuteranomaly.l, ConeCellCond::Normal);
