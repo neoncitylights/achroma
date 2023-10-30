@@ -1,9 +1,10 @@
 # achroma
 
 [![License](https://img.shields.io/badge/License-MIT%20%26%20Apache%202.0-blue)](#license)
-[![CI](https://github.com/neoncitylights/rust/actions/workflows/main.yml/badge.svg)](https://github.com/neoncitylights/rust/actions/workflows/main.yml)
-[![Security audit](https://github.com/neoncitylights/rust/actions/workflows/security-audit.yml/badge.svg)](https://github.com/neoncitylights/rust/actions/workflows/security-audit.yml)
-[![codecov](https://codecov.io/gh/neoncitylights/rust/branch/main/graph/badge.svg?token=6ZSIWAQTHU)](https://codecov.io/gh/neoncitylights/rust)
+[![Achroma documentation](https://docs.rs/achroma/badge.svg)](https://docs.rs/achroma)
+[![CI](https://github.com/neoncitylights/achroma/actions/workflows/main.yml/badge.svg)](https://github.com/neoncitylights/achroma/actions/workflows/main.yml)
+[![Security audit](https://github.com/neoncitylights/achroma/actions/workflows/security-audit.yml/badge.svg)](https://github.com/neoncitylights/achroma/actions/workflows/security-audit.yml)
+[![codecov](https://codecov.io/gh/neoncitylights/achroma/branch/main/graph/badge.svg?token=6ZSIWAQTHU)](https://codecov.io/gh/neoncitylights/achroma)
 
 A tiny crate for encoding data related to color vision and color vision deficiency (CVD).
 
@@ -14,7 +15,6 @@ cargo add achroma
 ```
 
 ## Usage
-
 
 ```rs
 use achroma::*;
