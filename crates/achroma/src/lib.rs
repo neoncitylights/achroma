@@ -1209,5 +1209,13 @@ mod tests {
 			ColorVision::try_from(ConeCellSummary::ACHROMATOPSIA),
 			Ok(ColorVision::Achromatopsia)
 		);
+		assert_eq!(
+			ColorVision::try_from(ConeCellSummary::new(
+				ConeCellCond::Anomalous,
+				ConeCellCond::Anomalous,
+				ConeCellCond::Anomalous
+			)),
+			Err(())
+		);
 	}
 }
