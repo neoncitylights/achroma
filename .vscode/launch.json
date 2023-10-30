@@ -7,16 +7,16 @@
 		{
 			"type": "lldb",
 			"request": "launch",
-			"name": "Debug unit tests in library '{{library}}'",
+			"name": "Debug unit tests in library 'achroma'",
 			"cargo": {
 				"args": [
 					"test",
 					"--no-run",
 					"--lib",
-					"--package={{library}}"
+					"--package=achroma"
 				],
 				"filter": {
-					"name": "{{library}}",
+					"name": "achroma",
 					"kind": "lib"
 				}
 			},
@@ -26,15 +26,15 @@
 		{
 			"type": "lldb",
 			"request": "launch",
-			"name": "Debug executable '{{library}}'",
+			"name": "Debug executable 'achroma'",
 			"cargo": {
 				"args": [
 					"build",
-					"--bin={{library}}",
-					"--package={{library}}"
+					"--bin=achroma",
+					"--package=achroma"
 				],
 				"filter": {
-					"name": "{{library}}",
+					"name": "achroma",
 					"kind": "bin"
 				}
 			},
@@ -44,16 +44,16 @@
 		{
 			"type": "lldb",
 			"request": "launch",
-			"name": "Debug unit tests in executable '{{library}}'",
+			"name": "Debug unit tests in executable 'achroma'",
 			"cargo": {
 				"args": [
 					"test",
 					"--no-run",
-					"--bin={{library}}",
-					"--package={{library}}"
+					"--bin=achroma",
+					"--package=achroma"
 				],
 				"filter": {
-					"name": "{{library}}",
+					"name": "achroma",
 					"kind": "bin"
 				}
 			},

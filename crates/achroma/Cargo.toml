@@ -1,0 +1,26 @@
+[package]
+name = "achroma"
+version = "0.1.0"
+authors = [
+	"Samantha Nguyen, <contact@samanthanguyen.me>",
+]
+description = "A tiny crate for encoding data related to color vision and color vision deficiency (CVD)"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+edition = "2021"
+rust-version = "1.70.0"
+# keywords = []
+# categories = []
+exclude = [
+	".devcontainer",
+	".github",
+	".vscode",
+	".idea",
+	"deny.toml",
+	".commitlintrc.json",
+	"package.json",
+	"package-lock.json",
+	"fuzz",
+	"book",
+	"benches",
+]
