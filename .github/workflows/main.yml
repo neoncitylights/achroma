@@ -189,10 +189,10 @@ jobs:
         include:
           - tool: clippy
             cmd-cargo: clippy
-            cmd-check: cargo fmt --all -- --check
+            cmd-check: cargo clippy --all-features
           - tool: rustfmt
             cmd-cargo: fmt
-            cmd-check: cargo clippy --all-features
+            cmd-check: cargo fmt --all -- --check
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
