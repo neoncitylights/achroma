@@ -10,24 +10,26 @@ use crate::numbers::XYZNum;
 use core::str::FromStr;
 
 macro_rules! impl_enum {
-    ($e:ident, $($variant:ident: $hex:literal: $s:literal),+) => {
-        #[repr(u32)]
-        #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
-        pub enum $e {
-            $($variant = $hex),+
-        }
+	($repr:ty, $e:ident, $($variant:ident: $hex:literal: $s:literal),+) => {
+		#[repr($repr)]
+		#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+		pub enum $e {
+			$($variant = $hex),+
+		}
 
-        impl core::str::FromStr for $e {
-            type Err = ();
-            fn from_str(s: &str) -> Result<Self, Self::Err> {
-                match s {
-                    $($s => Ok(Self::$variant),)+
-                    _ => Err(()),
-                }
-            }
-        }
-    }
+		impl core::str::FromStr for $e {
+			type Err = ();
+			fn from_str(s: &str) -> Result<Self, Self::Err> {
+				match s {
+					$($s => Ok(Self::$variant),)+
+					_ => Err(()),
+				}
+			}
+		}
+	};
 }
+
+pub(crate) use impl_enum;
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum RenderingIntent {
@@ -69,97 +71,47 @@ pub trait TypeSignature {
 }
 
 // Table 18
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
-pub enum ProfileClass {
-	InputDeviceProfile = 0x73636E72,
-	DisplayDeviceProfile = 0x6D6E7472,
-	OutputDeviceProfile = 0x70727472,
-	DeviceLinkProfile = 0x6C696E6B,
-	ColorSpaceProfile = 0x73706163,
-	AbstractProfile = 0x61627374,
-	NamedColorProfile = 0x6E6D636C,
-}
-
-impl FromStr for ProfileClass {
-	type Err = ();
-	fn from_str(v: &str) -> Result<Self, Self::Err> {
-		match v {
-			"scnr" => Ok(Self::InputDeviceProfile),
-			"mntr" => Ok(Self::DisplayDeviceProfile),
-			"prtr" => Ok(Self::OutputDeviceProfile),
-			"link" => Ok(Self::DeviceLinkProfile),
-			"spac" => Ok(Self::ColorSpaceProfile),
-			"abst" => Ok(Self::AbstractProfile),
-			"nmcl" => Ok(Self::NamedColorProfile),
-			_ => Err(()),
-		}
-	}
+impl_enum! {
+	u32,
+	ProfileClass,
+	InputDeviceProfile: 0x73636E72: "scnr",
+	DisplayDeviceProfile: 0x6D6E7472: "mntr",
+	OutputDeviceProfile: 0x70727472: "prtr",
+	DeviceLinkProfile: 0x6C696E6B: "link",
+	ColorSpaceProfile: 0x73706163: "spac",
+	AbstractProfile: 0x61627374: "abst",
+	NamedColorProfile: 0x6E6D636C: "nmcl"
 }
 
 // Table 19
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
-pub enum ColorSpace {
-	NCieXyz = 0x58595A20,
-	CieLab = 0x4C616220,
-	CieLuv = 0x4C757620,
-	YcbCr = 0x59436272,
-	CieYxy = 0x59787920,
-	Rgb = 0x52474220,
-	Gray = 0x47524159,
-	Hsv = 0x48535620,
-	Hls = 0x484C5320,
-	Cmyk = 0x434D594B,
-	Cmy = 0x434D5920,
-	Color2 = 0x32434C52,
-	Color3 = 0x33434C52,
-	Color4 = 0x34434C52,
-	Color5 = 0x35434C52,
-	Color6 = 0x36434C52,
-	Color7 = 0x37434C52,
-	Color8 = 0x38434C52,
-	Color9 = 0x39434C52,
-	Color10 = 0x41434C52,
-	Color11 = 0x42434C52,
-	Color12 = 0x43434C52,
-	Color13 = 0x44434C52,
-	Color14 = 0x45434C52,
-	Color15 = 0x46434C52,
-}
-
-impl FromStr for ColorSpace {
-	type Err = ();
-	fn from_str(s: &str) -> Result<Self, Self::Err> {
-		match s {
-			"XYZ " => Ok(Self::NCieXyz),
-			"Lab " => Ok(Self::CieLab),
-			"Luv " => Ok(Self::CieLuv),
-			"YCbr" => Ok(Self::YcbCr),
-			"Yxy " => Ok(Self::CieYxy),
-			"RGB " => Ok(Self::Rgb),
-			"GRAY" => Ok(Self::Gray),
-			"HSV " => Ok(Self::Hsv),
-			"HLS " => Ok(Self::Hls),
-			"CMYK" => Ok(Self::Cmyk),
-			"CMY " => Ok(Self::Cmy),
-			"2CLR" => Ok(Self::Color2),
-			"3CLR" => Ok(Self::Color3),
-			"4CLR" => Ok(Self::Color4),
-			"5CLR" => Ok(Self::Color5),
-			"6CLR" => Ok(Self::Color6),
-			"7CLR" => Ok(Self::Color7),
-			"8CLR" => Ok(Self::Color8),
-			"9CLR" => Ok(Self::Color9),
-			"ACLR" => Ok(Self::Color10),
-			"BCLR" => Ok(Self::Color11),
-			"CCLR" => Ok(Self::Color12),
-			"DCLR" => Ok(Self::Color13),
-			"ECLR" => Ok(Self::Color14),
-			"FCLR" => Ok(Self::Color15),
-			_ => Err(()),
-		}
-	}
+impl_enum! {
+	u32,
+	ColorSpace,
+	NCieXyz: 0x58595A20: "XYZ ",
+	CieLab: 0x4C616220: "Lab ",
+	CieLuv: 0x4C757620: "Luv ",
+	YcbCr: 0x59436272: "YCbr",
+	CieYxy: 0x59787920: "Yxy ",
+	Rgb: 0x52474220: "RGB ",
+	Gray: 0x47524159: "GRAY",
+	Hsv: 0x48535620: "HSV ",
+	Hls: 0x484C5320: "HLS ",
+	Cmyk: 0x434D594B: "CMYK",
+	Cmy: 0x434D5920: "CMY ",
+	Color2: 0x32434C52: "2CLR",
+	Color3: 0x33434C52: "3CLR",
+	Color4: 0x34434C52: "4CLR",
+	Color5: 0x35434C52: "5CLR",
+	Color6: 0x36434C52: "6CLR",
+	Color7: 0x37434C52: "7CLR",
+	Color8: 0x38434C52: "8CLR",
+	Color9: 0x39434C52: "9CLR",
+	Color10: 0x41434C52: "ACLR",
+	Color11: 0x42434C52: "BCLR",
+	Color12: 0x43434C52: "CCLR",
+	Color13: 0x44434C52: "DCLR",
+	Color14: 0x45434C52: "ECLR",
+	Color15: 0x46434C52: "FCLR"
 }
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]

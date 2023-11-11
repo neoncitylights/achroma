@@ -3,49 +3,50 @@ mod macros;
 
 pub use self::arrays::*;
 use crate::numbers::*;
+use crate::impl_enum;
 
 // Table 26
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Eq, PartialEq)]
-pub enum ColorimetricIntentImageStateTag {
-	SceneColorimetryEstimates = 0x73636565,
-	SceneAppearanceEstimates = 0x73617065,
-	FocalPlaneColorimetryEstimates = 0x66706565,
-	ReflectionHardcopyOriginalColorimetry = 0x72686F63,
-	ReflectionPrintOutputColorimetry = 0x7269706F,
+impl_enum! {
+	u32,
+	ColorimetricIntentImageStateTag,
+	SceneColorimetryEstimates: 0x73636565: "scene",
+	SceneAppearanceEstimates: 0x73617065: "sape",
+	FocalPlaneColorimetryEstimates: 0x66706565: "fpce",
+	ReflectionHardcopyOriginalColorimetry: 0x72686F63: "rhoc",
+	ReflectionPrintOutputColorimetry: 0x7269706F: "rpoc"
 }
 
 // Table 29
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Eq, PartialEq)]
-pub enum TechnologySignature {
-	FilmScanner = 0x6673636E,
-	DigitalCamera = 0x6463616D,
-	ReflectiveScanner = 0x7273636E,
-	InkJetPrinter = 0x696A6574,
-	ThermalWaxPrinter = 0x74776178,
-	ElectrophotographicPrinter = 0x6570686F,
-	ElectrostaticPrinter = 0x65737461,
-	DyeSublimationPrinter = 0x64737562,
-	PhotographicPaperPrinter = 0x70687072,
-	FilmWriter = 0x6670726E,
-	VideoMonitor = 0x7669646D,
-	VideoCamera = 0x76696463,
-	ProjectionTelevision = 0x706A7476,
-	CRTDisplay = 0x43525420,
-	PMDisplay = 0x504D4420,
-	AMDisplay = 0x414D4420,
-	OLEDDisplay = 0x4F4C4544,
-	PhotoCD = 0x4B504344,
-	PhotoImageSetter = 0x696D6773,
-	Gravure = 0x67726176,
-	OffsetLithography = 0x6F666673,
-	SilkScreen = 0x73696C6B,
-	Flexography = 0x666C6578,
-	MotionPictureFilmScanner = 0x6D706673,
-	MotionPictureFilmRecorder = 0x6D706672,
-	DigitalMotionPictureCamera = 0x646D7063,
-	DigitalCinemaProjector = 0x64636D70,
+impl_enum! {
+	u32,
+	TechnologySignature,
+	FilmScanner: 0x6673636E: "fscn",
+	DigitalCamera: 0x6463616D: "dcam",
+	ReflectiveScanner: 0x7273636E: "rscn",
+	InkJetPrinter: 0x696A6574: "ijet",
+	ThermalWaxPrinter: 0x74776178: "twax",
+	ElectrophotographicPrinter: 0x6570686F: "epho",
+	ElectrostaticPrinter: 0x65737461: "esta",
+	DyeSublimationPrinter: 0x64737562: "dsub",
+	PhotographicPaperPrinter: 0x70687072: "rpho",
+	FilmWriter: 0x6670726E: "fprn",
+	VideoMonitor: 0x7669646D: "vidm",
+	VideoCamera: 0x76696463: "vidc",
+	ProjectionTelevision: 0x706A7476: "pjtv",
+	CRTDisplay: 0x43525420: "CRT ",
+	PMDisplay: 0x504D4420: "PMD ",
+	AMDisplay: 0x414D4420: "AMD ",
+	OLEDDisplay: 0x4F4C4544: "OLED",
+	PhotoCD: 0x4B504344: "KPCD",
+	PhotoImageSetter: 0x696D6773: "imgs",
+	Gravure: 0x67726176: "grav",
+	OffsetLithography: 0x6F666673: "offs",
+	SilkScreen: 0x73696C6B: "silk",
+	Flexography: 0x666C6578: "flex",
+	MotionPictureFilmScanner: 0x6D706673: "mpfs",
+	MotionPictureFilmRecorder: 0x6D706672: "mpfr",
+	DigitalMotionPictureCamera: 0x646D7063: "dmpc",
+	DigitalCinemaProjector: 0x64636D70: "dcmp"
 }
 
 // Table 30
@@ -411,18 +412,18 @@ pub struct CurveStructure<const N: usize, const P: usize> {
 }
 
 // Table 75
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Eq, PartialEq)]
-pub enum CurveMeasurement {
-	StatusA = 0x53746141,
-	StatusE = 0x53746145,
-	StatusI = 0x53746149,
-	StatusT = 0x53746154,
-	StatusM = 0x5374614d,
-	DinEPolarFilter = 0x444e2020,
-	DinENoPolarFilter = 0x444e2050,
-	DinIPolarFilter = 0x444e4e20,
-	DinINoPolarFilter = 0x444e4e50,
+impl_enum! {
+	u32,
+	CurveMeasurement,
+	StatusA: 0x53746141: "StaA",
+	StatusE: 0x53746145: "StaE",
+	StatusI: 0x53746149: "StaI",
+	StatusT: 0x53746154: "StaT",
+	StatusM: 0x5374614D: "StaM",
+	DinEPolarFilter: 0x444E2020: "Dn  ",
+	DinENoPolarFilter: 0x444E2050: "Dn P",
+	DinIPolarFilter: 0x444E4E20: "DNN ",
+	DinINoPolarFilter: 0x444E4E50: "DNNP"
 }
 
 // Table 77
