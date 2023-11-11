@@ -9,6 +9,27 @@ use crate::numbers::DateTimeNum;
 use crate::numbers::XYZNum;
 use core::str::FromStr;
 
+macro_rules! impl_enum {
+    ($e:ident, $($variant:ident: $hex:literal: $s:literal),+) => {
+        #[repr(u32)]
+        #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+        pub enum $e {
+            $($variant = $hex),+
+        }
+
+        impl core::str::FromStr for $e {
+            type Err = ();
+            fn from_str(s: &str) -> Result<Self, Self::Err> {
+                match s {
+                    $($s => Ok(Self::$variant),)+
+                    _ => Err(()),
+                }
+            }
+        }
+    }
+}
+
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum RenderingIntent {
 	IccAbsColorimetric,
 	MediaRelativeColoriemtric,
@@ -16,9 +37,11 @@ pub enum RenderingIntent {
 	Saturation,
 }
 
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub struct IccProfileReader();
 
 // Table 17
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub struct IccProfileHeaderU128 {
 	pub profile_size: u32,
 	pub cmm_type: u32,
@@ -47,6 +70,7 @@ pub trait TypeSignature {
 
 // Table 18
 #[repr(u32)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum ProfileClass {
 	InputDeviceProfile = 0x73636E72,
 	DisplayDeviceProfile = 0x6D6E7472,
@@ -75,6 +99,7 @@ impl FromStr for ProfileClass {
 
 // Table 19
 #[repr(u32)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum ColorSpace {
 	NCieXyz = 0x58595A20,
 	CieLab = 0x4C616220,
@@ -137,7 +162,9 @@ impl FromStr for ColorSpace {
 	}
 }
 
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub struct DeviceAttributes(u64);
+
 impl DeviceAttributes {
 	pub fn new(value: u64) -> Self {
 		Self(value)
