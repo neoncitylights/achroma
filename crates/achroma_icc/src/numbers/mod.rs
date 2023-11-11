@@ -4,7 +4,7 @@ macro_rules! impl_num_primitive {
 		pub struct $n($n_ty);
 
 		impl $n {
-			pub const fn new(value:$n_ty) -> Self {
+			pub const fn new(value: $n_ty) -> Self {
 				Self(value)
 			}
 
