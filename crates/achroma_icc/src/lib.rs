@@ -1,3 +1,7 @@
+#![allow(unused_imports)]
+#![allow(unused_macros)]
+#![allow(dead_code)]
+
 pub mod numbers;
 pub mod tags;
 
@@ -33,7 +37,7 @@ pub struct IccProfileHeaderU128 {
 	pub illuminant: XYZNum,
 	pub creator: u32,
 	pub profile_id: u128,
-	pub(crate) reserved_1: [u8; 28],
+	/*pub(crate)*/ reserved_1: [u8; 28],
 }
 
 // Custom traits
